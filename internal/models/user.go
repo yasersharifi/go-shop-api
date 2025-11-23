@@ -61,5 +61,10 @@ func (u *User) SetPassword(raw string) error {
 }
 
 func (u *User) CheckPassword(raw string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(raw))
+	return err == nil
+}
 
+func (u *User) ToOutput() UserOutput {
+	
 }
