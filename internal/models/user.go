@@ -24,7 +24,7 @@ type User struct {
 	LastName  string    `gorm:"type:varchar(100)"`
 	Email     string    `gorm:"uniqueIndex;not null"`
 	Password  string
-	Phone     string   `gorm:"type:varchar(15);uniqueIndex"`
+	Phone     *string   `gorm:"type:varchar(15);uniqueIndex"`
 	Role      UserRole `gorm:"type:varchar(20);not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -66,5 +66,20 @@ func (u *User) CheckPassword(raw string) bool {
 }
 
 func (u *User) ToOutput() UserOutput {
-	
+	var phone string
+	if u.Phone == nil {
+		phone = ""
+	} else {
+		phone = *u.Phone
+	}
+	return UserOutput{
+		ID: u.ID.String(),
+		FirstName: u.FirstName,
+		LastName: u.LastName,
+		Email: u.Email,
+		Phone: phone,
+		Role: u.Role,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
+	}
 }
